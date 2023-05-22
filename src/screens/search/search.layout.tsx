@@ -6,7 +6,7 @@ import { SearchBar } from "../../components/search-bar";
 import { Character, FavoriteCharacter } from "../../types";
 import { SectionHeader } from "../../components/section-header/section-header";
 import { SectionItem } from "../../components/section-item";
-import { styles } from ".";
+import { styles } from "./styles";
 
 type Props = {
   characters: Character[];
@@ -16,6 +16,7 @@ type Props = {
   onSearchValueChange: React.Dispatch<React.SetStateAction<string>>;
   addFavorite: (character: FavoriteCharacter) => void;
   deleteFavorite: (id: number) => void;
+  handleCharacterPress: () => void;
 };
 
 type SectionData = {
@@ -34,6 +35,7 @@ export const SearchLayout = ({
   onSearchValueChange,
   addFavorite,
   deleteFavorite,
+  handleCharacterPress,
 }: Props) => {
   const height = useHeaderHeight();
 
@@ -47,6 +49,7 @@ export const SearchLayout = ({
         isFavorite={isFavorite}
         addFavorite={addFavorite}
         deleteFavorite={deleteFavorite}
+        handleCharacterPress={handleCharacterPress}
       />
     );
   };

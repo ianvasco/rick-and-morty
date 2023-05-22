@@ -11,6 +11,7 @@ type Props = {
   isFavorite: boolean;
   addFavorite: (character: FavoriteCharacter) => void;
   deleteFavorite: (id: number) => void;
+  handleCharacterPress: () => void;
 };
 
 export const SectionItem = ({
@@ -18,6 +19,7 @@ export const SectionItem = ({
   isFavorite,
   addFavorite,
   deleteFavorite,
+  handleCharacterPress,
 }: Props) => {
   const favoriteIconName = isFavorite ? "ios-heart-sharp" : "ios-heart-outline";
   const handleFavoritePress = () => {
@@ -29,7 +31,7 @@ export const SectionItem = ({
       : deleteFavorite(character.id);
   };
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handleCharacterPress}>
       <Image style={styles.image} source={character.image} />
       <View style={styles.textContainer}>
         <Text style={styles.name}>{character.name}</Text>
@@ -45,6 +47,6 @@ export const SectionItem = ({
           color={!isFavorite ? Colors.GRAY_300 : Colors.SECONDARY_600}
         />
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };

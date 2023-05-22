@@ -8,6 +8,7 @@ import { NavigationScreens, RootStackPropList } from "./routes";
 import { CharacterDetailsScreen } from "../screens/character-detail";
 import { SearchScreen } from "../screens/search";
 import { FiltersScreen } from "../screens/filters";
+import { NavigationBackButton } from "../components/navigation-back-button";
 
 const RootStackNavigator = createNativeStackNavigator<RootStackPropList>();
 const RootStack = () => {
@@ -26,11 +27,17 @@ const RootStack = () => {
           },
         }}
         component={SearchScreen}
-      ></RootStackNavigator.Screen>
+      />
       <RootStackNavigator.Screen
         name={NavigationScreens.CharacterDetailScreen}
+        options={({ navigation }) => ({
+          headerTitle: "",
+          headerLeft: () => (
+            <NavigationBackButton onPress={navigation.goBack} />
+          ),
+        })}
         component={CharacterDetailsScreen}
-      ></RootStackNavigator.Screen>
+      />
       <RootStackNavigator.Screen
         name={NavigationScreens.FilterScreen}
         component={FiltersScreen}
