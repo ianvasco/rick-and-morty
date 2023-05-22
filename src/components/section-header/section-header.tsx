@@ -7,10 +7,12 @@ type Props = {
   totalItems: number;
 };
 
-export const SearchBar = ({ title, totalItems }: Props) => {
+export const SectionHeader = ({ title, totalItems }: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{`${title} (${totalItems})`}</Text>
+      <Text style={styles.title}>
+        {`${title} (${totalItems})`.toUpperCase()}
+      </Text>
     </View>
   );
 };

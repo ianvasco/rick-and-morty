@@ -7,9 +7,14 @@ import { styles } from "./styles";
 type Props = {
   placeholder: string;
   value: string;
+  onSearchValueChange: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const SearchBar = ({ placeholder, value }: Props) => {
+export const SearchBar = ({
+  placeholder,
+  value,
+  onSearchValueChange,
+}: Props) => {
   return (
     <View style={styles.container}>
       <Ionicons
@@ -22,6 +27,7 @@ export const SearchBar = ({ placeholder, value }: Props) => {
         style={styles.textInput}
         placeholder={placeholder}
         value={value}
+        onChangeText={onSearchValueChange}
       />
       <Ionicons
         style={styles.filterIcon}
