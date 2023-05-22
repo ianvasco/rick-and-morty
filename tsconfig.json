@@ -1,4 +1,12 @@
 {
   "compilerOptions": {},
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "module": "commonjs",
+  "target": "esnext",
+  "lib": ["es6"],
+  "jsx": "react-native",
+  "noEmit": true,
+  "moduleResolution": "node",
+  "include": ["**/*.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", ".babelrc.js", "jest.config.js"]
 }
