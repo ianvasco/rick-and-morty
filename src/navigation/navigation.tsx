@@ -1,4 +1,7 @@
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ReactElement } from "react";
 import { NavigationScreens, RootStackPropList } from "./routes";
@@ -11,10 +14,17 @@ const RootStack = () => {
   return (
     <RootStackNavigator.Navigator
       initialRouteName={NavigationScreens.SearchScreen}
-      screenOptions={{ headerShown: false }}
     >
       <RootStackNavigator.Screen
         name={NavigationScreens.SearchScreen}
+        options={{
+          title: "Rick and Morty list",
+          headerLargeTitle: true,
+          headerLargeTitleStyle: {
+            fontSize: 24,
+            fontWeight: "700",
+          },
+        }}
         component={SearchScreen}
       ></RootStackNavigator.Screen>
       <RootStackNavigator.Screen
