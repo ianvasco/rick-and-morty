@@ -6,6 +6,8 @@ export const Colors = {
   BACKGROUND: "#FFFFFF",
   SEARCH_BAR_BACKGROUND: "#F3F4F6",
   GRAY_200: "#E5E7EB",
+  GRAY_300: "#D1D5DB",
   GRAY_400: "#9CA3AF",
-  GRAY_600: "#6B7280",
+  GRAY_500: "#6B7280",
+  GRAY_900: "#111827",
 };
