@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { Character, FavoriteCharacter } from "../../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
@@ -63,6 +63,45 @@ const charResult: Character[] = [
     species: "Human",
     image: "https://rickandmortyapi.com/api/character/avatar/7.jpeg",
   },
+  {
+    id: 15,
+    name: "Alien Rick",
+    status: "unknown",
+    species: "Alien",
+
+    image: "https://rickandmortyapi.com/api/character/avatar/15.jpeg",
+  },
+  {
+    id: 16,
+    name: "Amish Cyborg",
+    status: "Dead",
+    species: "Alien",
+
+    image: "https://rickandmortyapi.com/api/character/avatar/16.jpeg",
+  },
+  {
+    id: 17,
+    name: "Annie",
+    status: "Alive",
+    species: "Human",
+
+    image: "https://rickandmortyapi.com/api/character/avatar/17.jpeg",
+  },
+  {
+    id: 18,
+    name: "Antenna Morty",
+    status: "Alive",
+    species: "Human",
+    image: "https://rickandmortyapi.com/api/character/avatar/18.jpeg",
+  },
+  {
+    id: 19,
+    name: "Antenna Rick",
+    status: "unknown",
+    species: "Human",
+
+    image: "https://rickandmortyapi.com/api/character/avatar/19.jpeg",
+  },
 ];
 
 const useCharacterStore = create<SearchStore>()(
@@ -80,18 +119,23 @@ const useCharacterStore = create<SearchStore>()(
       },
       setAddFavorite: (character) =>
         set((prevState) => ({
-          characters: prevState.characters,
-          favorites: [character, ...prevState.favorites],
+          characters: prevState.characters.filter(
+            (char) => char.id !== character.id
+          ),
+          favorites: [...prevState.favorites, character],
         })),
       removeFavorites: (id) =>
         set((prevState) => ({
-          favorites: [...prevState.favorites],
-          characters: prevState.characters.filter((char) => char.id !== id),
+          characters: [
+            ...prevState.characters,
+            ...prevState.favorites.filter((char) => char.id === id),
+          ],
+          favorites: prevState.favorites.filter((char) => char.id !== id),
         })),
     }),
     {
       name: "favorite-storage",
-      getStorage: () => AsyncStorage,
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );
@@ -100,23 +144,25 @@ export const useCharacters = () => {
   const setCharacters = useCharacterStore((state) => state.setCharacters);
   const setAddFavorite = useCharacterStore((state) => state.setAddFavorite);
   const removeFavorites = useCharacterStore((state) => state.removeFavorites);
-  const favorites = useCharacterStore((state) => state.characters);
+  const favorites = useCharacterStore((state) => state.favorites);
+  const characters = useCharacterStore((state) => state.characters);
 
   React.useEffect(() => {
-    setCharacters(charResult);
+    setCharacters(characters.length === 0 ? charResult : characters);
   }, []);
 
   const addFavorite = (character: FavoriteCharacter) => {
     setAddFavorite(character);
   };
 
-  const deleteFavorites = (id: number) => {
+  const deleteFavorite = (id: number) => {
     removeFavorites(id);
   };
 
   return {
+    characters,
     favorites,
-    deleteFavorites,
+    deleteFavorite,
     addFavorite,
   };
 };
