@@ -8,5 +8,8 @@ export enum NavigationScreens {
 export type RootStackPropList = {
   [NavigationScreens.SearchScreen]: undefined;
   [NavigationScreens.FilterScreen]: undefined;
-  [NavigationScreens.CharacterDetailScreen]: { id: number };
+  [NavigationScreens.CharacterDetailScreen]: {
+    id: number;
+    isFavorite: boolean;
+  };
 };

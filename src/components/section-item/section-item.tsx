@@ -11,7 +11,7 @@ type Props = {
   isFavorite: boolean;
   addFavorite: (character: FavoriteCharacter) => void;
   deleteFavorite: (id: number) => void;
-  handleCharacterPress: () => void;
+  handleCharacterPress: (characterID: number, isFavorite: boolean) => void;
 };
 
 export const SectionItem = ({
@@ -31,7 +31,10 @@ export const SectionItem = ({
       : deleteFavorite(character.id);
   };
   return (
-    <TouchableOpacity style={styles.container} onPress={handleCharacterPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => handleCharacterPress(character.id, isFavorite)}
+    >
       <Image style={styles.image} source={character.image} />
       <View style={styles.textContainer}>
         <Text style={styles.name}>{character.name}</Text>

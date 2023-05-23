@@ -9,3 +9,7 @@ export interface Character {
 export interface FavoriteCharacter extends Character {
   isFavorite: boolean;
 }
+
+export interface CharacterDetail extends Character {
+  occupation?: string;
+}

@@ -14,8 +14,11 @@ export const SearchScreen = (props: SearchScreenNavigationProps) => {
   const { favorites, characters, addFavorite, deleteFavorite } =
     useCharacters();
 
-  const handleCharacterPress = () => {
-    props.navigation.navigate(NavigationScreens.CharacterDetailScreen);
+  const handleCharacterPress = (characterID: number, isFavorite: boolean) => {
+    props.navigation.navigate(NavigationScreens.CharacterDetailScreen, {
+      id: characterID,
+      isFavorite,
+    });
   };
 
   return (

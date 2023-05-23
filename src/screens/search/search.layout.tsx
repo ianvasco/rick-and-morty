@@ -16,7 +16,7 @@ type Props = {
   onSearchValueChange: React.Dispatch<React.SetStateAction<string>>;
   addFavorite: (character: FavoriteCharacter) => void;
   deleteFavorite: (id: number) => void;
-  handleCharacterPress: () => void;
+  handleCharacterPress: (characterID: number, isFavorite: boolean) => void;
 };
 
 type SectionData = {

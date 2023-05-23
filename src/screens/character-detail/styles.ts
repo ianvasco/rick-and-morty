@@ -5,5 +5,18 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.BACKGROUND,
     paddingHorizontal: 16,
+    paddingTop: 24,
+  },
+  name: {
+    fontWeight: "700",
+    fontSize: 24,
+    lineHeight: 32,
+    color: Colors.GRAY_900,
+    marginTop: 8,
+    marginBottom: 16,
+  },
+  divider: {
+    borderTopColor: Colors.GRAY_200,
+    borderTopWidth: 1,
   },
 });
