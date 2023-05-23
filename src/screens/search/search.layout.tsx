@@ -17,6 +17,7 @@ type Props = {
   addFavorite: (character: FavoriteCharacter) => void;
   deleteFavorite: (id: number) => void;
   handleCharacterPress: (characterID: number, isFavorite: boolean) => void;
+  handleFilterPress: () => void;
 };
 
 type SectionData = {
@@ -36,6 +37,7 @@ export const SearchLayout = ({
   addFavorite,
   deleteFavorite,
   handleCharacterPress,
+  handleFilterPress,
 }: Props) => {
   const height = useHeaderHeight();
 
@@ -81,6 +83,7 @@ export const SearchLayout = ({
           placeholder={searchPlaceholder}
           value={searchValue}
           onSearchValueChange={onSearchValueChange}
+          onFilterPress={handleFilterPress}
         />
         <SectionList
           sections={getSectionData()}

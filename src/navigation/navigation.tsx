@@ -37,6 +37,13 @@ const RootStack = () => {
       />
       <RootStackNavigator.Screen
         name={NavigationScreens.FilterScreen}
+        options={({ navigation }) => ({
+          headerTitle: "Filters",
+          headerLeft: () => (
+            <NavigationBackButton onPress={navigation.goBack} />
+          ),
+          presentation: "modal",
+        })}
         component={FiltersScreen}
       ></RootStackNavigator.Screen>
     </RootStackNavigator.Navigator>
