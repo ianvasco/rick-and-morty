@@ -1,1 +1,1 @@
-export * from "./apply-button";
+export * from "./button";

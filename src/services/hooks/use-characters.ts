@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { Character, FavoriteCharacter } from "../../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
+import { gql, useQuery } from "@apollo/client";
 
 type CharacterStore = {
   characters: Character[];
@@ -13,97 +14,19 @@ type CharacterStore = {
   deleteCharacter: (id: number) => void;
 };
 
-const charResult: Character[] = [
-  {
-    id: 1,
-    name: "Rick Sanchez",
-    status: "Alive",
-    species: "Human",
-    image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-  },
-  {
-    id: 2,
-    name: "Morty Smith",
-    status: "Alive",
-    species: "Human",
-
-    image: "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-  },
-  {
-    id: 3,
-    name: "Summer Smith",
-    status: "Alive",
-    species: "Human",
-    image: "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
-  },
-  {
-    id: 4,
-    name: "Beth Smith",
-    status: "Alive",
-    species: "Human",
-    image: "https://rickandmortyapi.com/api/character/avatar/4.jpeg",
-  },
-  {
-    id: 5,
-    name: "Jerry Smith",
-    status: "Alive",
-    species: "Human",
-    image: "https://rickandmortyapi.com/api/character/avatar/5.jpeg",
-  },
-  {
-    id: 6,
-    name: "Abadango Cluster Princess",
-    status: "Alive",
-    species: "Alien",
-    image: "https://rickandmortyapi.com/api/character/avatar/6.jpeg",
-  },
-  {
-    id: 7,
-    name: "Abradolf Lincler",
-    status: "unknown",
-    species: "Human",
-    image: "https://rickandmortyapi.com/api/character/avatar/7.jpeg",
-  },
-  {
-    id: 15,
-    name: "Alien Rick",
-    status: "unknown",
-    species: "Alien",
-
-    image: "https://rickandmortyapi.com/api/character/avatar/15.jpeg",
-  },
-  {
-    id: 16,
-    name: "Amish Cyborg",
-    status: "Dead",
-    species: "Alien",
-
-    image: "https://rickandmortyapi.com/api/character/avatar/16.jpeg",
-  },
-  {
-    id: 17,
-    name: "Annie",
-    status: "Alive",
-    species: "Human",
-
-    image: "https://rickandmortyapi.com/api/character/avatar/17.jpeg",
-  },
-  {
-    id: 18,
-    name: "Antenna Morty",
-    status: "Alive",
-    species: "Human",
-    image: "https://rickandmortyapi.com/api/character/avatar/18.jpeg",
-  },
-  {
-    id: 19,
-    name: "Antenna Rick",
-    status: "unknown",
-    species: "Human",
-
-    image: "https://rickandmortyapi.com/api/character/avatar/19.jpeg",
-  },
-];
+const SECTIONS_QUERY = gql`
+  query {
+    characters(page: 1) {
+      results {
+        id
+        name
+        status
+        species
+        image
+      }
+    }
+  }
+`;
 
 const useCharacterStore = create<CharacterStore>()(
   persist(
@@ -154,9 +77,13 @@ export const useCharacters = () => {
   const favorites = useCharacterStore((state) => state.favorites);
   const characters = useCharacterStore((state) => state.characters);
 
+  const { data, loading, error } = useQuery(SECTIONS_QUERY);
+
   React.useEffect(() => {
-    setCharacters(characters.length === 0 ? charResult : characters);
-  }, []);
+    if (characters.length === 0 && data?.characters?.results?.length > 0) {
+      setCharacters(data.characters.results);
+    }
+  }, [data, characters, setCharacters]);
 
   const addFavorite = (character: FavoriteCharacter) => {
     setAddFavorite(character);
@@ -176,5 +103,9 @@ export const useCharacters = () => {
     deleteFavorite,
     addFavorite,
     deleteCharacter,
+    setCharacters,
+    data,
+    loading,
+    error,
   };
 };

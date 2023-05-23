@@ -1,5 +1,10 @@
 import React, { useCallback } from "react";
-import { View, SectionList, SectionListRenderItemInfo } from "react-native";
+import {
+  View,
+  SectionList,
+  SectionListRenderItemInfo,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { SearchBar } from "../../components/search-bar";

@@ -3,6 +3,7 @@ import { SearchLayout } from "./search.layout";
 import { useCharacters } from "../../services/hooks/use-characters";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { NavigationScreens, RootStackPropList } from "../../navigation";
+import { Loading } from "../../components/loading";
 
 type SearchScreenNavigationProps = NativeStackScreenProps<
   RootStackPropList,
@@ -11,7 +12,7 @@ type SearchScreenNavigationProps = NativeStackScreenProps<
 
 export const SearchScreen = (props: SearchScreenNavigationProps) => {
   const [searchValue, setSearchValue] = React.useState("");
-  const { favorites, characters, addFavorite, deleteFavorite } =
+  const { favorites, characters, addFavorite, deleteFavorite, loading } =
     useCharacters();
 
   const handleCharacterPress = (characterID: number, isFavorite: boolean) => {
@@ -24,6 +25,10 @@ export const SearchScreen = (props: SearchScreenNavigationProps) => {
   const handleFilterPress = () => {
     props.navigation.navigate(NavigationScreens.FilterScreen);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <SearchLayout
