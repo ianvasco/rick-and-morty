@@ -10,12 +10,14 @@ type Props = {
   characterDetails: CharacterDetail;
   isFavorite: boolean;
   deleteCharacter: (id: number) => void;
+  handleFavoritePress: (character: CharacterDetail) => void;
 };
 
 export const CharacterDetailsLayout = ({
   characterDetails,
   isFavorite,
   deleteCharacter,
+  handleFavoritePress,
 }: Props) => {
   const characterDetailsRows = characterDetails && [
     {
@@ -31,9 +33,13 @@ export const CharacterDetailsLayout = ({
 
   return (
     <View style={styles.container}>
-      {characterDetails && (
+      {!!characterDetails && (
         <>
-          <Avatar imageUrl={characterDetails.image} isFavorite={isFavorite} />
+          <Avatar
+            characterDetails={characterDetails}
+            isFavorite={isFavorite}
+            addFavorite={handleFavoritePress}
+          />
           <Text style={styles.name}>{characterDetails.name}</Text>
           <View>
             {characterDetailsRows.map((charDetail) => (

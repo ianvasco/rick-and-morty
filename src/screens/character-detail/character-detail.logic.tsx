@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackPropList, NavigationScreens } from "../../navigation";
 import { useCharacterDetails, useCharacters } from "../../services/hooks";
 import { Alert } from "react-native";
+import { Character } from "../../types";
 
 type CharacterDetailNavigationProps = NativeStackScreenProps<
   RootStackPropList,
@@ -14,9 +15,21 @@ export const CharacterDetailsScreen = (
   props: CharacterDetailNavigationProps
 ) => {
   const characterID = props.route.params?.id;
-  const isFavorite = props.route.params?.isFavorite;
+  const [isFavorite, setFavorite] = React.useState(
+    props.route.params?.isFavorite
+  );
   const { characterDetails } = useCharacterDetails(characterID);
-  const { deleteCharacter } = useCharacters();
+  const { deleteCharacter, addFavorite, deleteFavorite } = useCharacters();
+
+  const handleFavoritePress = (character: Character) => {
+    !isFavorite
+      ? addFavorite({
+          ...character,
+          isFavorite: true,
+        })
+      : deleteFavorite(character.id);
+    setFavorite(!isFavorite);
+  };
 
   const handleCharacterDeletion = (id: number) => {
     Alert.alert(
@@ -46,6 +59,7 @@ export const CharacterDetailsScreen = (
       characterDetails={characterDetails}
       isFavorite={isFavorite}
       deleteCharacter={handleCharacterDeletion}
+      handleFavoritePress={handleFavoritePress}
     />
   );
 };
