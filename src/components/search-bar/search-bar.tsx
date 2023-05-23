@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput } from "react-native";
+import { View, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../utils/colors";
 import { styles } from "./styles";
@@ -8,12 +8,14 @@ type Props = {
   placeholder: string;
   value: string;
   onSearchValueChange: React.Dispatch<React.SetStateAction<string>>;
+  onFilterPress: () => void;
 };
 
 export const SearchBar = ({
   placeholder,
   value,
   onSearchValueChange,
+  onFilterPress,
 }: Props) => {
   return (
     <View style={styles.container}>
@@ -33,6 +35,7 @@ export const SearchBar = ({
         style={styles.filterIcon}
         name="ios-filter"
         size={24}
+        onPress={onFilterPress}
         color={Colors.PRIMARY_600}
       />
     </View>
