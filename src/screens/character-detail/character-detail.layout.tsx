@@ -26,8 +26,8 @@ export const CharacterDetailsLayout = ({
     },
     { title: "Status", subtitle: characterDetails.status },
     {
-      title: "Occupation",
-      subtitle: characterDetails.occupation,
+      title: "Gender",
+      subtitle: characterDetails.gender,
     },
   ];
 

@@ -14,7 +14,7 @@ type CharacterStore = {
   deleteCharacter: (id: number) => void;
 };
 
-const SECTIONS_QUERY = gql`
+const CHARACTERS_QUERY = gql`
   query {
     characters(page: 1) {
       results {
@@ -77,7 +77,7 @@ export const useCharacters = () => {
   const favorites = useCharacterStore((state) => state.favorites);
   const characters = useCharacterStore((state) => state.characters);
 
-  const { data, loading, error } = useQuery(SECTIONS_QUERY);
+  const { data, loading, error } = useQuery(CHARACTERS_QUERY);
 
   React.useEffect(() => {
     if (characters.length === 0 && data?.characters?.results?.length > 0) {

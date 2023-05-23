@@ -5,6 +5,7 @@ import { RootStackPropList, NavigationScreens } from "../../navigation";
 import { useCharacterDetails, useCharacters } from "../../services/hooks";
 import { Alert } from "react-native";
 import { Character } from "../../types";
+import { Loading } from "../../components/loading";
 
 type CharacterDetailNavigationProps = NativeStackScreenProps<
   RootStackPropList,
@@ -18,7 +19,7 @@ export const CharacterDetailsScreen = (
   const [isFavorite, setFavorite] = React.useState(
     props.route.params?.isFavorite
   );
-  const { characterDetails } = useCharacterDetails(characterID);
+  const { characterDetails, loading } = useCharacterDetails(characterID);
   const { deleteCharacter, addFavorite, deleteFavorite } = useCharacters();
 
   const handleFavoritePress = (character: Character) => {
@@ -53,6 +54,10 @@ export const CharacterDetailsScreen = (
       { cancelable: true }
     );
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <CharacterDetailsLayout

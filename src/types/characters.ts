@@ -11,5 +11,5 @@ export interface FavoriteCharacter extends Character {
 }
 
 export interface CharacterDetail extends Character {
-  occupation?: string;
+  gender?: string;
 }

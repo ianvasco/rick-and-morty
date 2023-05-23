@@ -1,24 +1,37 @@
 import React from "react";
-import { Character, CharacterDetail } from "../../types";
+import { CharacterDetail } from "../../types";
+import { gql, useQuery } from "@apollo/client";
 
-const mockedCharacterDetails: CharacterDetail = {
-  id: 2,
-  name: "Morty Smith",
-  status: "Alive",
-  species: "Human",
-  image: "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-  occupation: "Rick's entertainment",
-};
+const CHARACTER_QUERY = gql`
+  query Character($id: ID!) {
+    character(id: $id) {
+      id
+      name
+      status
+      species
+      image
+      gender
+    }
+  }
+`;
 
 export const useCharacterDetails = (characterID: number) => {
   const [characterDetails, setCharacterDetails] =
     React.useState<CharacterDetail>();
 
+  const { data, loading, error } = useQuery(CHARACTER_QUERY, {
+    variables: { id: characterID },
+  });
+
   React.useEffect(() => {
-    setCharacterDetails(mockedCharacterDetails);
-  }, []);
+    if (data && data?.character) {
+      setCharacterDetails(data?.character);
+    }
+  }, [data, setCharacterDetails]);
 
   return {
     characterDetails,
+    loading,
+    error,
   };
 };
