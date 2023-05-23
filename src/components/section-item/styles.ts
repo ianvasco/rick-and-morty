@@ -27,8 +27,8 @@ export const styles = StyleSheet.create({
     color: Colors.GRAY_500,
   },
   favoriteButton: {
-    flex: 1,
-    alignItems: "flex-end",
+    position: "absolute",
+    right: 0,
     padding: 5, //gives extra space to touch the element.
   },
   textContainer: {
