@@ -19,4 +19,12 @@ export const styles = StyleSheet.create({
     borderTopColor: Colors.GRAY_200,
     borderTopWidth: 1,
   },
+  deleteText: {
+    color: "red",
+    fontSize: 16,
+    lineHeight: 21,
+  },
+  deleteButton: {
+    marginTop: 16,
+  },
 });

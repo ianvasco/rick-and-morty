@@ -4,12 +4,13 @@ import { Character, FavoriteCharacter } from "../../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 
-type SearchStore = {
+type CharacterStore = {
   characters: Character[];
   favorites: FavoriteCharacter[];
   setCharacters: (favorites: Character[]) => void;
   setAddFavorite: (favorite: FavoriteCharacter) => void;
   removeFavorites: (id: number) => void;
+  deleteCharacter: (id: number) => void;
 };
 
 const charResult: Character[] = [
@@ -104,7 +105,7 @@ const charResult: Character[] = [
   },
 ];
 
-const useCharacterStore = create<SearchStore>()(
+const useCharacterStore = create<CharacterStore>()(
   persist(
     (set) => ({
       characters: [],
@@ -132,9 +133,14 @@ const useCharacterStore = create<SearchStore>()(
           ],
           favorites: prevState.favorites.filter((char) => char.id !== id),
         })),
+      deleteCharacter: (id) =>
+        set((prevState) => ({
+          characters: prevState.characters.filter((char) => char.id !== id),
+          favorites: prevState.favorites.filter((char) => char.id !== id),
+        })),
     }),
     {
-      name: "favorite-storage",
+      name: "characters-storage",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )
@@ -144,6 +150,7 @@ export const useCharacters = () => {
   const setCharacters = useCharacterStore((state) => state.setCharacters);
   const setAddFavorite = useCharacterStore((state) => state.setAddFavorite);
   const removeFavorites = useCharacterStore((state) => state.removeFavorites);
+  const removeCharacter = useCharacterStore((state) => state.deleteCharacter);
   const favorites = useCharacterStore((state) => state.favorites);
   const characters = useCharacterStore((state) => state.characters);
 
@@ -159,10 +166,15 @@ export const useCharacters = () => {
     removeFavorites(id);
   };
 
+  const deleteCharacter = (id: number) => {
+    removeCharacter(id);
+  };
+
   return {
     characters,
     favorites,
     deleteFavorite,
     addFavorite,
+    deleteCharacter,
   };
 };

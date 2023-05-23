@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./styles";
 import { CharacterDetail } from "../../types";
@@ -9,23 +9,23 @@ import { Avatar } from "./components/avatar";
 type Props = {
   characterDetails: CharacterDetail;
   isFavorite: boolean;
+  deleteCharacter: (id: number) => void;
 };
 
 export const CharacterDetailsLayout = ({
   characterDetails,
   isFavorite,
+  deleteCharacter,
 }: Props) => {
   const characterDetailsRows = characterDetails && [
     {
       title: "Specie",
       subtitle: characterDetails.species,
-      hasDivider: true,
     },
-    { title: "Status", subtitle: characterDetails.status, hasDivider: true },
+    { title: "Status", subtitle: characterDetails.status },
     {
       title: "Occupation",
       subtitle: characterDetails.occupation,
-      hasDivider: false,
     },
   ];
 
@@ -42,9 +42,15 @@ export const CharacterDetailsLayout = ({
                   title={charDetail.title}
                   subtitle={charDetail.subtitle}
                 />
-                {charDetail.hasDivider && <View style={styles.divider} />}
+                <View style={styles.divider} />
               </>
             ))}
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => deleteCharacter(characterDetails.id)}
+            >
+              <Text style={styles.deleteText}>Delete</Text>
+            </TouchableOpacity>
           </View>
         </>
       )}
