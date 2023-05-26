@@ -19,8 +19,20 @@ export const CharacterDetailsScreen = (
   const [isFavorite, setFavorite] = React.useState(
     props.route.params?.isFavorite
   );
+  const [commentValue, setCommentValue] = React.useState("");
+
   const { characterDetails, loading } = useCharacterDetails(characterID);
-  const { deleteCharacter, addFavorite, deleteFavorite } = useCharacters();
+  const { deleteCharacter, addFavorite, deleteFavorite, addComment } =
+    useCharacters();
+
+  const handleCommentChange = (
+    commentText: string,
+    character: Character,
+    isFavorite: boolean
+  ) => {
+    setCommentValue(commentText);
+    addComment(character, isFavorite);
+  };
 
   const handleFavoritePress = (character: Character) => {
     !isFavorite
@@ -65,6 +77,8 @@ export const CharacterDetailsScreen = (
       isFavorite={isFavorite}
       deleteCharacter={handleCharacterDeletion}
       handleFavoritePress={handleFavoritePress}
+      comment={commentValue}
+      handleCommentChange={handleCommentChange}
     />
   );
 };

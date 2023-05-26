@@ -4,12 +4,12 @@ import { Image } from "expo-image";
 import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../../../utils/colors";
-import { CharacterDetail, FavoriteCharacter } from "../../../../types";
+import { Character } from "../../../../types";
 
 type Props = {
-  characterDetails: CharacterDetail;
+  characterDetails: Character;
   isFavorite: boolean;
-  addFavorite: (character: CharacterDetail) => void;
+  addFavorite: (character: Character) => void;
 };
 
 export const Avatar = ({

@@ -1,15 +1,17 @@
+import React from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { Character, FavoriteCharacter } from "../../types";
+import { Character } from "../../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
 import { gql, useQuery } from "@apollo/client";
+import { findIndex } from "lodash";
 
 type CharacterStore = {
   characters: Character[];
-  favorites: FavoriteCharacter[];
-  setCharacters: (favorites: Character[]) => void;
-  setAddFavorite: (favorite: FavoriteCharacter) => void;
+  favorites: Character[];
+  setCharacters: (character: Character[]) => void;
+  setCharWithComment: (character: Character, isFavorite: boolean) => void;
+  setAddFavorite: (favorite: Character) => void;
   removeFavorites: (id: number) => void;
   deleteCharacter: (id: number) => void;
 };
@@ -48,6 +50,19 @@ const useCharacterStore = create<CharacterStore>()(
           ),
           favorites: [...prevState.favorites, character],
         })),
+      setCharWithComment: (character, isFavorite) =>
+        set((prevState) => {
+          return {
+            characters: [
+              ...prevState.characters,
+              ...(!isFavorite ? [character] : []),
+            ],
+            favorites: [
+              ...prevState.favorites,
+              ...(isFavorite ? [{ ...character, isFavorite: true }] : []),
+            ],
+          };
+        }),
       removeFavorites: (id) =>
         set((prevState) => ({
           characters: [
@@ -74,6 +89,9 @@ export const useCharacters = () => {
   const setAddFavorite = useCharacterStore((state) => state.setAddFavorite);
   const removeFavorites = useCharacterStore((state) => state.removeFavorites);
   const removeCharacter = useCharacterStore((state) => state.deleteCharacter);
+  const setCharacterComment = useCharacterStore(
+    (state) => state.setCharWithComment
+  );
   const favorites = useCharacterStore((state) => state.favorites);
   const characters = useCharacterStore((state) => state.characters);
 
@@ -85,8 +103,12 @@ export const useCharacters = () => {
     }
   }, [data, characters, setCharacters]);
 
-  const addFavorite = (character: FavoriteCharacter) => {
+  const addFavorite = (character: Character) => {
     setAddFavorite(character);
+  };
+
+  const addComment = (character: Character, isFavorite: boolean) => {
+    setCharacterComment(character, isFavorite);
   };
 
   const deleteFavorite = (id: number) => {
@@ -104,6 +126,7 @@ export const useCharacters = () => {
     addFavorite,
     deleteCharacter,
     setCharacters,
+    addComment,
     data,
     loading,
     error,

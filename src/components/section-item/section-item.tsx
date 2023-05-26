@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
-import { Character, FavoriteCharacter } from "../../types";
+import { Character } from "../../types";
 import { Colors } from "../../utils/colors";
 
 type Props = {
   character: Character;
   isFavorite: boolean;
-  addFavorite: (character: FavoriteCharacter) => void;
+  addFavorite: (character: Character) => void;
   deleteFavorite: (id: number) => void;
   handleCharacterPress: (characterID: number, isFavorite: boolean) => void;
 };

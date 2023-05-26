@@ -1,23 +1,30 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
-import { CharacterDetail } from "../../types";
+import { Character } from "../../types";
 import { CharacterDetailRow } from "./components/character-details-row";
 import { Avatar } from "./components/avatar";
 
 type Props = {
-  characterDetails: CharacterDetail;
+  characterDetails: Character;
   isFavorite: boolean;
+  comment: string;
   deleteCharacter: (id: number) => void;
-  handleFavoritePress: (character: CharacterDetail) => void;
+  handleFavoritePress: (character: Character) => void;
+  handleCommentChange: (
+    text: string,
+    character: Character,
+    isFavorite: boolean
+  ) => void;
 };
 
 export const CharacterDetailsLayout = ({
   characterDetails,
   isFavorite,
+  comment,
   deleteCharacter,
   handleFavoritePress,
+  handleCommentChange,
 }: Props) => {
   const characterDetailsRows = characterDetails && [
     {
@@ -27,7 +34,7 @@ export const CharacterDetailsLayout = ({
     { title: "Status", subtitle: characterDetails.status },
     {
       title: "Gender",
-      subtitle: characterDetails.gender,
+      subtitle: characterDetails.gender ?? "",
     },
   ];
 
@@ -41,23 +48,34 @@ export const CharacterDetailsLayout = ({
             addFavorite={handleFavoritePress}
           />
           <Text style={styles.name}>{characterDetails.name}</Text>
-          <View>
-            {characterDetailsRows.map((charDetail) => (
-              <>
-                <CharacterDetailRow
-                  title={charDetail.title}
-                  subtitle={charDetail.subtitle}
-                />
-                <View style={styles.divider} />
-              </>
-            ))}
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => deleteCharacter(characterDetails.id)}
-            >
-              <Text style={styles.deleteText}>Delete</Text>
-            </TouchableOpacity>
-          </View>
+          <TextInput
+            multiline
+            numberOfLines={2}
+            maxLength={70}
+            value={comment}
+            onChangeText={(text) =>
+              handleCommentChange(text, characterDetails, isFavorite)
+            }
+            placeholder="Put your comment here"
+            style={styles.input}
+          />
+          <View style={styles.divider} />
+          {characterDetailsRows.map((charDetail) => (
+            <>
+              <CharacterDetailRow
+                key={charDetail.title}
+                title={charDetail.title}
+                subtitle={charDetail.subtitle}
+              />
+              <View style={styles.divider} />
+            </>
+          ))}
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => deleteCharacter(characterDetails.id)}
+          >
+            <Text style={styles.deleteText}>Delete</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>

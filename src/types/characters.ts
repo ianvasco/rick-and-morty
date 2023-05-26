@@ -4,12 +4,7 @@ export interface Character {
   status: string;
   species: string;
   image: string;
-}
-
-export interface FavoriteCharacter extends Character {
-  isFavorite: boolean;
-}
-
-export interface CharacterDetail extends Character {
+  comment?: string;
+  isFavorite?: boolean;
   gender?: string;
 }

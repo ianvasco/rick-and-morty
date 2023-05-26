@@ -27,4 +27,11 @@ export const styles = StyleSheet.create({
   deleteButton: {
     marginTop: 16,
   },
+  input: {
+    fontWeight: "500",
+    fontSize: 16,
+    lineHeight: 21,
+    color: Colors.GRAY_900,
+    marginBottom: 16,
+  },
 });

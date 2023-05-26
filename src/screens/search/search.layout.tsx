@@ -1,25 +1,20 @@
 import React, { useCallback } from "react";
-import {
-  View,
-  SectionList,
-  SectionListRenderItemInfo,
-  ActivityIndicator,
-} from "react-native";
+import { View, SectionList, SectionListRenderItemInfo } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { SearchBar } from "../../components/search-bar";
-import { Character, FavoriteCharacter } from "../../types";
+import { Character } from "../../types";
 import { SectionHeader } from "../../components/section-header/section-header";
 import { SectionItem } from "../../components/section-item";
 import { styles } from "./styles";
 
 type Props = {
   characters: Character[];
-  favoriteCharacters: FavoriteCharacter[];
+  favoriteCharacters: Character[];
   searchValue: string;
   searchPlaceholder: string;
   onSearchValueChange: React.Dispatch<React.SetStateAction<string>>;
-  addFavorite: (character: FavoriteCharacter) => void;
+  addFavorite: (character: Character) => void;
   deleteFavorite: (id: number) => void;
   handleCharacterPress: (characterID: number, isFavorite: boolean) => void;
   handleFilterPress: () => void;
@@ -28,9 +23,9 @@ type Props = {
 type SectionData = {
   title: string;
   renderItem: (
-    item: SectionListRenderItemInfo<Character | FavoriteCharacter, SectionData>
+    item: SectionListRenderItemInfo<Character, SectionData>
   ) => JSX.Element;
-  data: Character[] | FavoriteCharacter[];
+  data: Character[];
 };
 
 export const SearchLayout = ({
@@ -47,7 +42,7 @@ export const SearchLayout = ({
   const height = useHeaderHeight();
 
   const renderCharacter: (
-    item: SectionListRenderItemInfo<Character | FavoriteCharacter, SectionData>,
+    item: SectionListRenderItemInfo<Character, SectionData>,
     isFavorite?: boolean
   ) => JSX.Element = ({ item }, isFavorite) => {
     return (
