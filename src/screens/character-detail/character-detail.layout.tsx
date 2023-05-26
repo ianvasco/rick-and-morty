@@ -43,6 +43,7 @@ export const CharacterDetailsLayout = ({
       {!!characterDetails && (
         <>
           <Avatar
+            key={characterDetails.name}
             characterDetails={characterDetails}
             isFavorite={isFavorite}
             addFavorite={handleFavoritePress}

@@ -1,6 +1,8 @@
 import React from "react";
 import { Character } from "../../types";
 import { gql, useQuery } from "@apollo/client";
+import { useCharacters } from "./use-characters";
+import { find } from "lodash";
 
 const CHARACTER_QUERY = gql`
   query Character($id: ID!) {
@@ -15,12 +17,25 @@ const CHARACTER_QUERY = gql`
   }
 `;
 
-export const useCharacterDetails = (characterID: number) => {
+export const useCharacterDetails = (
+  characterID: number,
+  isFavorite: boolean
+) => {
   const [characterDetails, setCharacterDetails] = React.useState<Character>();
+  const [characterComment, setCharacterComment] = React.useState("");
+  const { characters, favorites } = useCharacters();
 
   const { data, loading, error } = useQuery(CHARACTER_QUERY, {
     variables: { id: characterID },
   });
+
+  React.useEffect(() => {
+    const { comment } = find(
+      isFavorite ? favorites : characters,
+      (char) => char.id === characterID
+    );
+    setCharacterComment(comment);
+  }, [characters, favorites, setCharacterComment]);
 
   React.useEffect(() => {
     if (data && data?.character) {
@@ -32,5 +47,6 @@ export const useCharacterDetails = (characterID: number) => {
     characterDetails,
     loading,
     error,
+    characterComment,
   };
 };

@@ -54,11 +54,13 @@ const useCharacterStore = create<CharacterStore>()(
         set((prevState) => {
           return {
             characters: [
-              ...prevState.characters,
+              ...prevState.characters.filter(
+                (char) => char.id !== character.id
+              ),
               ...(!isFavorite ? [character] : []),
             ],
             favorites: [
-              ...prevState.favorites,
+              ...prevState.favorites.filter((char) => char.id !== character.id),
               ...(isFavorite ? [{ ...character, isFavorite: true }] : []),
             ],
           };

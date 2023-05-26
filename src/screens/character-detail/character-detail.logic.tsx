@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CharacterDetailsLayout } from "./character-detail.layout";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackPropList, NavigationScreens } from "../../navigation";
@@ -21,9 +21,17 @@ export const CharacterDetailsScreen = (
   );
   const [commentValue, setCommentValue] = React.useState("");
 
-  const { characterDetails, loading } = useCharacterDetails(characterID);
+  const { characterDetails, loading, characterComment } = useCharacterDetails(
+    characterID,
+    isFavorite
+  );
+
   const { deleteCharacter, addFavorite, deleteFavorite, addComment } =
     useCharacters();
+
+  useEffect(() => {
+    setCommentValue(characterComment);
+  }, [characterComment]);
 
   const handleCommentChange = (
     commentText: string,
@@ -31,13 +39,14 @@ export const CharacterDetailsScreen = (
     isFavorite: boolean
   ) => {
     setCommentValue(commentText);
-    addComment(character, isFavorite);
+    addComment({ ...character, comment: commentText }, isFavorite);
   };
 
   const handleFavoritePress = (character: Character) => {
     !isFavorite
       ? addFavorite({
           ...character,
+          comment: commentValue,
           isFavorite: true,
         })
       : deleteFavorite(character.id);
