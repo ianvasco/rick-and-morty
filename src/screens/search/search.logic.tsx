@@ -5,6 +5,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { NavigationScreens, RootStackPropList } from "../../navigation";
 import { Loading } from "../../components/loading";
 import { Character } from "../../types";
+import { Sort } from "./types";
+import { orderBy } from "lodash";
 
 type SearchScreenNavigationProps = NativeStackScreenProps<
   RootStackPropList,
@@ -13,6 +15,7 @@ type SearchScreenNavigationProps = NativeStackScreenProps<
 
 export const SearchScreen = (props: SearchScreenNavigationProps) => {
   const [searchValue, setSearchValue] = React.useState("");
+  const [orderByValue, setOrderByValue] = React.useState(Sort.Default);
   const { favorites, characters, addFavorite, deleteFavorite, loading } =
     useCharacters();
 
@@ -21,8 +24,21 @@ export const SearchScreen = (props: SearchScreenNavigationProps) => {
     [searchValue]
   );
 
-  const filteredFavorites = favorites.filter(filterByName);
-  const filteredCharacters = characters.filter(filterByName);
+  const orderByCriteria = React.useCallback(
+    (characters: Character[]) => {
+      if (orderByValue === Sort.Default)
+        return orderBy(characters, "id", "asc");
+      return orderBy(
+        characters,
+        "name",
+        orderByValue === Sort.Asc ? "asc" : "desc"
+      );
+    },
+    [orderByValue]
+  );
+
+  const filteredFavorites = orderByCriteria(favorites.filter(filterByName));
+  const filteredCharacters = orderByCriteria(characters.filter(filterByName));
 
   const handleCharacterPress = (characterID: number, isFavorite: boolean) => {
     props.navigation.navigate(NavigationScreens.CharacterDetailScreen, {
@@ -33,6 +49,16 @@ export const SearchScreen = (props: SearchScreenNavigationProps) => {
 
   const handleFilterPress = () => {
     props.navigation.navigate(NavigationScreens.FilterScreen);
+  };
+
+  const handleSortPress = () => {
+    if (orderByValue === Sort.Default) {
+      setOrderByValue(Sort.Asc);
+    } else if (orderByValue === Sort.Asc) {
+      setOrderByValue(Sort.Desc);
+    } else {
+      setOrderByValue(Sort.Default);
+    }
   };
 
   if (loading) {
@@ -50,6 +76,8 @@ export const SearchScreen = (props: SearchScreenNavigationProps) => {
       deleteFavorite={deleteFavorite}
       handleCharacterPress={handleCharacterPress}
       handleFilterPress={handleFilterPress}
+      orderBy={orderByValue}
+      handleSortPress={handleSortPress}
     />
   );
 };

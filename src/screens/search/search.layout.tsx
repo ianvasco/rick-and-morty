@@ -13,17 +13,21 @@ import { SectionHeader } from "../../components/section-header/section-header";
 import { SectionItem } from "../../components/section-item";
 import { styles } from "./styles";
 import { Image } from "expo-image";
+import { SortButton } from "./components/sort-button/sort-button";
+import { Sort } from "./types";
 
 type Props = {
   characters: Character[];
   favoriteCharacters: Character[];
   searchValue: string;
   searchPlaceholder: string;
+  orderBy: Sort;
   onSearchValueChange: React.Dispatch<React.SetStateAction<string>>;
   addFavorite: (character: Character) => void;
   deleteFavorite: (id: number) => void;
   handleCharacterPress: (characterID: number, isFavorite: boolean) => void;
   handleFilterPress: () => void;
+  handleSortPress: () => void;
 };
 
 type SectionData = {
@@ -39,11 +43,13 @@ export const SearchLayout = ({
   favoriteCharacters,
   searchValue,
   searchPlaceholder,
+  orderBy,
   onSearchValueChange,
   addFavorite,
   deleteFavorite,
   handleCharacterPress,
   handleFilterPress,
+  handleSortPress,
 }: Props) => {
   const height = useHeaderHeight();
 
@@ -91,6 +97,7 @@ export const SearchLayout = ({
           onSearchValueChange={onSearchValueChange}
           onFilterPress={handleFilterPress}
         />
+        <SortButton onPress={handleSortPress} orderBy={orderBy} />
         <SectionList
           sections={getSectionData()}
           keyExtractor={(item) => `${item.id + item.name}`}
