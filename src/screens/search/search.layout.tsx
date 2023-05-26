@@ -1,5 +1,10 @@
 import React, { useCallback } from "react";
-import { View, SectionList, SectionListRenderItemInfo } from "react-native";
+import {
+  View,
+  SectionList,
+  SectionListRenderItemInfo,
+  Text,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { SearchBar } from "../../components/search-bar";
@@ -7,6 +12,7 @@ import { Character } from "../../types";
 import { SectionHeader } from "../../components/section-header/section-header";
 import { SectionItem } from "../../components/section-item";
 import { styles } from "./styles";
+import { Image } from "expo-image";
 
 type Props = {
   characters: Character[];
@@ -89,6 +95,22 @@ export const SearchLayout = ({
           sections={getSectionData()}
           keyExtractor={(item) => `${item.id + item.name}`}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => {
+            return (
+              <View style={styles.noResultsContainer}>
+                <Text
+                  style={styles.noResultsText}
+                >{`WUBBA LUBBA DUB DUB!`}</Text>
+                <Image
+                  style={styles.noResultsImage}
+                  source={require("../../assets/images/picklerick.png")}
+                />
+                <Text
+                  style={styles.noResultsText}
+                >{`Sorry, we could only find a Picke Rick. Please search another term.`}</Text>
+              </View>
+            );
+          }}
           renderSectionHeader={({ section }) => (
             <View style={styles.sectionHeaderContainer}>
               <SectionHeader

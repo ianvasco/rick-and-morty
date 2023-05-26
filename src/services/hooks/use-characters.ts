@@ -4,7 +4,6 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { Character } from "../../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { gql, useQuery } from "@apollo/client";
-import { findIndex } from "lodash";
 
 type CharacterStore = {
   characters: Character[];

@@ -12,6 +12,9 @@ const RootStack = () => {
   return (
     <RootStackNavigator.Navigator
       initialRouteName={NavigationScreens.SearchScreen}
+      screenOptions={{
+        headerShadowVisible: false,
+      }}
     >
       <RootStackNavigator.Screen
         name={NavigationScreens.SearchScreen}
@@ -22,7 +25,6 @@ const RootStack = () => {
             fontSize: 24,
             fontWeight: "700",
           },
-          headerShadowVisible: false,
         }}
         component={SearchScreen}
       />
@@ -30,7 +32,6 @@ const RootStack = () => {
         name={NavigationScreens.CharacterDetailScreen}
         options={({ navigation }) => ({
           headerTitle: "",
-          headerShadowVisible: false,
           headerLeft: () => (
             <NavigationBackButton onPress={navigation.goBack} />
           ),

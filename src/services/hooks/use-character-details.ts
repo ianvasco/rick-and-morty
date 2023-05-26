@@ -30,11 +30,11 @@ export const useCharacterDetails = (
   });
 
   React.useEffect(() => {
-    const { comment } = find(
+    const character = find(
       isFavorite ? favorites : characters,
       (char) => char.id === characterID
     );
-    setCharacterComment(comment);
+    character && setCharacterComment(character.comment);
   }, [characters, favorites, setCharacterComment]);
 
   React.useEffect(() => {
